@@ -1,0 +1,28 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "NodeNext",
+		"lib": ["esnext"],
+		"types": ["@cloudflare/workers-types/2023-07-01"],
+		"moduleResolution": "NodeNext",
+		"strict": true,
+    "useDefineForClassFields": true, 
+    "noFallthroughCasesInSwitch": true, 
+    "noImplicitReturns": true, 
+    "useUnknownInCatchVariables": true,
+    "noImplicitOverride": true, 
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+		"noEmit": true,
+		"esModuleInterop": false,
+		"allowSyntheticDefaultImports": false,
+		"forceConsistentCasingInFileNames": true,
+		"verbatimModuleSyntax": true,
+		"baseUrl": "./",
+		"paths": {
+			"@routes/*": ["src/routes/*"],
+			"@/*": ["src/*"],
+		}
+	},
+	"include": ["src/**/*", "worker-configuration.d.ts"]
+}
