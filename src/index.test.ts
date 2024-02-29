@@ -6,7 +6,7 @@ import { v1 } from '@routes/v1.js'
 
 vi.mock('@routes/v1.js', () => ({
   v1: {
-    example: vi.fn(() => new Response('Hello, World!')),
+    getNfts: vi.fn(() => new Response('Hello, World!')),
   },
 }))
 
@@ -24,20 +24,20 @@ test('adds cors headers', async () => {
   expect(response.headers.get('Access-Control-Allow-Methods')).toBe('GET, HEAD, OPTIONS')
 })
 
-test('v1 example handler for v1 example request', async () => {
+test('v1 getNfts handler for v1 getNfts request', async () => {
   const response = await index.fetch(
-    new Request('http://localhost/v1/example', {
+    new Request('http://localhost/v1/mainnet/getNfts', {
       method: 'GET',
     }),
     {} as Env,
     {} as ExecutionContext,
   )
-  expect(v1.example).toHaveBeenCalled()
+  expect(v1.getNfts).toHaveBeenCalled()
   expect(await response.text()).toBe('Hello, World!')
 })
 
 test('head handler for head request', async () => {
-  vi.mocked(v1.example).mockImplementation(() => {
+  vi.mocked(v1.getNfts).mockImplementation(async () => {
     const response = new Response('Hello, World!')
     response.headers.set('Content-Type', 'application/json')
     response.headers.set('Custom-Header', 'HeaderValue')
@@ -45,13 +45,13 @@ test('head handler for head request', async () => {
   })
 
   const response = await index.fetch(
-    new Request('http://localhost/v1/example', {
+    new Request('http://localhost/v1/mainnet/getNfts', {
       method: 'HEAD',
     }),
     {} as Env,
     {} as ExecutionContext,
   )
-  expect(v1.example).toHaveBeenCalled()
+  expect(v1.getNfts).toHaveBeenCalled()
   expect(response.status).toBe(200)
   expect(response.body).toBe(null)
   expect(response.headers.get('Content-Type')).toBe('application/json')
@@ -60,7 +60,7 @@ test('head handler for head request', async () => {
 
 test('options returned on options request', async () => {
   const response = await index.fetch(
-    new Request('http://localhost/v1/example', {
+    new Request('http://localhost/v1/mainnet/getNfts', {
       method: 'OPTIONS',
       headers: {
         origin: 'http://localhost',
@@ -76,7 +76,7 @@ test('options returned on options request', async () => {
 
 test('not found for unsupported method', async () => {
   const response = await index.fetch(
-    new Request('http://localhost/v1/example', {
+    new Request('http://localhost/v1/mainnet/getNfts', {
       method: 'POST',
     }),
     {} as Env,
@@ -109,11 +109,11 @@ test('not found for unsupported path', async () => {
 })
 
 test('500 error+cors for internal error', async () => {
-  vi.mocked(v1.example).mockImplementation(() => {
+  vi.mocked(v1.getNfts).mockImplementation(() => {
     throw new Error('test')
   })
   const response = await index.fetch(
-    new Request('http://localhost/v1/example', {
+    new Request('http://localhost/v1/mainnet/getNfts', {
       method: 'GET',
       headers: {
         origin: 'http://localhost',

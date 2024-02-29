@@ -1,8 +1,8 @@
-import { Router, type IRequestStrict } from 'itty-router/Router'
+import { Router } from 'itty-router/Router'
 import { createCors } from 'itty-router/createCors'
 import { error } from 'itty-router/error'
 
-import type { RouteParameters } from '@/types.js'
+import type { RequestWithParams, RouteParameters } from '@/types.js'
 
 import { v1 } from '@routes/v1.js'
 import { stripBodyForHeadRequest } from './utils/stripBodyForHeadRequest.js'
@@ -12,15 +12,15 @@ const { preflight, corsify } = createCors({
   methods: ['GET', 'HEAD', 'OPTIONS'],
 })
 
-const router = Router<IRequestStrict, [RouteParameters]>()
+const router = Router<RequestWithParams, [RouteParameters]>()
 
 // Preflight
 router.all('*', preflight)
 
 // V1 Routes
-router.get('/v1/example', v1.example)
-router.head('/v1/example', v1.example)
-router.options('/v1/example', () => new Response(null, { status: 204 }))
+router.get('/v1/:chainName/getNfts', v1.getNfts)
+router.head('/v1/:chainName/getNfts', v1.getNfts)
+router.options('/v1/:chainName/getNfts', () => new Response(null, { status: 204 }))
 
 // 404 Fallback
 router.all('*', () => error(404, 'Not Found'))
