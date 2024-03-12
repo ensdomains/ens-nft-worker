@@ -5,7 +5,7 @@ const createAlchemyUrl = ({
   alchemyKey,
   requestParams,
 }: { chainName: string; alchemyKey: string; requestParams: URLSearchParams }) =>
-  `https://eth-${chainName}.alchemyapi.io/nft/v2/${alchemyKey}/getNFTs/?${requestParams.toString()}`
+  `https://eth-${chainName}.g.alchemy.com/nft/v2/${alchemyKey}/getNFTs/?${requestParams.toString()}`
 
 export const getNfts = async (request: RequestWithParams, { env }: RouteParameters) => {
   const requestUrl = new URL(request.url)
