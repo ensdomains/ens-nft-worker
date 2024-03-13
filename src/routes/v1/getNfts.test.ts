@@ -87,7 +87,7 @@ const createTestRequest = () => {
 test('fetches NFTs for chain', async () => {
   const fetchMock = getMiniflareFetchMock()
   fetchMock.disableNetConnect()
-  const origin = fetchMock.get('https://eth-mainnet.alchemyapi.io')
+  const origin = fetchMock.get('https://eth-mainnet.g.alchemy.com')
   origin
     .intercept({ method: 'GET', path: `/nft/v2/MOCK_KEY/getNFTs/${requestUrl.search}` })
     .reply(200, realResponse, {
@@ -109,7 +109,7 @@ test('fetches NFTs for chain', async () => {
 test('redacts API key from response', async () => {
   const fetchMock = getMiniflareFetchMock()
   fetchMock.disableNetConnect()
-  const origin = fetchMock.get('https://eth-mainnet.alchemyapi.io')
+  const origin = fetchMock.get('https://eth-mainnet.g.alchemy.com')
   const errorWithApiKey = JSON.stringify({
     error: 'Something bad happened',
     apiKey: 'MOCK_KEY',
